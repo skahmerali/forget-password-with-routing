@@ -1,7 +1,7 @@
 var express = require('express')
 var bcrypt = require("bcrypt-inzi")
 var jwt = require('jsonwebtoken');
-var { userModel } = require('../dbconn/modules')
+var { userModel } = require('./../dbcon/module')
 var router = express.Router();
 var SERVER_SECRET = process.env.SECRET || "1234";
 

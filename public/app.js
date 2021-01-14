@@ -1,28 +1,19 @@
 
-// const url ="https://signup-database.herokuapp.com/"
+const url ="https://signup-database.herokuapp.com/"
 // const url = "http://localhost:3000";
 
 function signup() {
     axios({
         method: 'post',
-        url: 'http://localhost:5000/signup',
+        url: 'http://localhost:3000/signup',
         data: {
             name: document.getElementById("signup-name").value,
             email: document.getElementById("signup-email").value,
             password: document.getElementById("signup-password").value,
-            number: document.getElementById("signup-number").value,
+            phone: document.getElementById("signup-number").value,
             gender: document.getElementById("signup-gender").value
         },
-        // alert("tdfthd")
-        // console.log(name)
-        // console.log(email)
-        // console.log(password)
-        // console.log(number)
-        // console.log(gender)
-
-
-        withCredentials: true
-    }).then((response) => {
+            }).then((response) => {
         if (response.data.status === 200) {
             alert(response.data.message)
             location.href = "./login.html"
@@ -41,7 +32,7 @@ function signup() {
 function userLogin() {
     axios({
         method: 'post',
-        url: 'http://localhost:5000/login',
+        url: 'http://localhost:3000/login',
         data: {
             email: document.getElementById("login-email").value,
             passowrd: document.getElementById("login-password").value
@@ -89,7 +80,7 @@ function userLogin() {
 function getProfile() {
     axios({
         method: 'get',
-        url: 'http://localhost:5000/profile',
+        url: 'http://localhost:3000/profile',
         credentials: 'include',
     }).then((response) => {
         console.log(response);
@@ -107,7 +98,7 @@ function getProfile() {
     function logout(){
         axios({
             method: 'post',
-            url: 'http://localhost:5000/logout',
+            url: 'http://localhost:3000/logout',
         }).then((response) => {
             console.log(response);
             location.href = "./login.html"
@@ -116,4 +107,4 @@ function getProfile() {
         });
         return false
     }
-    
+       

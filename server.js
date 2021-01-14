@@ -6,8 +6,8 @@ var morgan = require("morgan");
 var path = require("path")
 var jwt = require('jsonwebtoken')
 
-var {userModel} = require('./dbconn/modules');
-var authRoutes = require('./routes/auth')
+var {userModel} = require('./dbcon/module');
+var authRoutes = require('./route/auth')
 
 var SERVER_SECRET = process.env.SECRET || "1234";
 
@@ -26,6 +26,7 @@ app.use(morgan('dev'));
 app.use("/", express.static(path.resolve(path.join(__dirname, "public"))))
 
 app.use('/',authRoutes);
+// app.use('/',authRoutes);
 
 app.use(function (req, res, next) {
 
@@ -81,7 +82,7 @@ app.get("/profile", (req, res, next) => {
         })
 })
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log("server is running on: ", PORT);
 })
