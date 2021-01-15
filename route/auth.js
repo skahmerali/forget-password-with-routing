@@ -68,6 +68,7 @@ router.post("/signup", (req, res, next) => {
 })
 
 router.post("/login", (req, res, next) => {
+  
 
     if (!req.body.email || !req.body.password) {
 
@@ -83,6 +84,7 @@ router.post("/login", (req, res, next) => {
 
     userModel.findOne({ email: req.body.email },
         function (err, user) {
+            console.log(user);
             if (err) {
                 res.status(500).send({
                     message: "an error occured: " + JSON.stringify(err)
