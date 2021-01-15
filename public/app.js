@@ -4,7 +4,7 @@
 function signup() {
     axios({
         method: 'post',
-        url ="https://login-re-password.herokuapp.com/signup",
+        url :"https://login-re-password.herokuapp.com/signup",
         // url: 'http://localhost:3000/signup',
         data: {
             name: document.getElementById("signup-name").value,
@@ -34,7 +34,7 @@ function userLogin() {
     axios({
         method: 'post',
         // url: 'http://localhost:3000/login',
-        url ="https://login-re-password.herokuapp.com/login",
+        url :"https://login-re-password.herokuapp.com/login",
         data: {
             email: document.getElementById('login-email').value,
             password: document.getElementById('login-password').value,
@@ -85,7 +85,7 @@ function getProfile() {
     axios({
         method: 'get',
         // url: 'http://localhost:3000/profile',
-        url ="https://login-re-password.herokuapp.com/profile",
+        url :"https://login-re-password.herokuapp.com/profile",
         credentials: 'include',
     }).then((response) => {
         console.log(response.data.profile.name);
@@ -104,7 +104,7 @@ function logout() {
     axios({
         method: 'post',
         // url: 'http://localhost:3000/logout',
-        url:'https:login-re-password.herokuapp.com/'
+        url:'https:login-re-password.herokuapp.com/logout'
     }).then((response) => {
         console.log(response);
         location.href = "./login.html"
