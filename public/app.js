@@ -4,7 +4,7 @@
 function signup() {
     axios({
         method: 'post',
-        url ="https://signup-database.herokuapp.com/",
+        url ="https://login-re-password.herokuapp.com/",
         // url: 'http://localhost:3000/signup',
         data: {
             name: document.getElementById("signup-name").value,
@@ -34,7 +34,7 @@ function userLogin() {
     axios({
         method: 'post',
         // url: 'http://localhost:3000/login',
-        url ="https://signup-database.herokuapp.com/",
+        url ="https://login-re-password.herokuapp.com/",
         data: {
             email: document.getElementById('login-email').value,
             password: document.getElementById('login-password').value,
@@ -85,14 +85,14 @@ function getProfile() {
     axios({
         method: 'get',
         // url: 'http://localhost:3000/profile',
-        url ="https://signup-database.herokuapp.com/",
+        url ="https://login-re-password.herokuapp.com/",
         credentials: 'include',
     }).then((response) => {
         console.log(response.data.profile.name);
-        document.getElementById('print-username').value = response.data.profile.name
-        document.getElementById('print-email').value = response.data.profile.email
-        document.getElementById('print-number').value = response.data.profile.phone
-        document.getElementById('print-gender').value = response.data.profile.gender
+        document.getElementById('print-username').value = response.data.profile.name;
+        document.getElementById('print-email').value = response.data.profile.email;
+        document.getElementById('print-number').value = response.data.profile.phone;
+        document.getElementById('print-gender').value = response.data.profile.gender;
     }, (error) => {
         console.log(error.message);
         location.href = "./login.html"
@@ -103,7 +103,8 @@ function getProfile() {
 function logout() {
     axios({
         method: 'post',
-        url: 'http://localhost:3000/logout',
+        // url: 'http://localhost:3000/logout',
+        url:'https:login-re-password.herokuapp.com/'
     }).then((response) => {
         console.log(response);
         location.href = "./login.html"
