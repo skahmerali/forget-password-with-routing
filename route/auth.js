@@ -1,17 +1,24 @@
 var express = require('express')
 var bcrypt = require("bcrypt-inzi")
 var jwt = require('jsonwebtoken');
-var { userModel } = require('./../dbcon/module')
+var postmark = require("postmark");
+// var emailApi = process.env.EMAIL_API || "c1085f89-3538-4e2d-8751-faf7125765e6"; 
+var client = new postmark.ServerClient("58bbdaff-7827-4014-9ded-173a915b02b9");
+
+
+var {
+    userModel
+} = require('./../dbcon/module')
 var router = express.Router();
 var SERVER_SECRET = process.env.SECRET || "1234";
 
 router.post("/signup", (req, res, next) => {
 
-    if (!req.body.name
-        || !req.body.email
-        || !req.body.password
-        || !req.body.phone
-        || !req.body.gender) {
+    if (!req.body.name ||
+        !req.body.email ||
+        !req.body.password ||
+        !req.body.phone ||
+        !req.body.gender) {
 
         res.status(403).send(`
             please send name, email, passwod, phone and gender in json body.
@@ -26,7 +33,9 @@ router.post("/signup", (req, res, next) => {
         return;
     }
 
-    userModel.findOne({ email: req.body.email },
+    userModel.findOne({
+            email: req.body.email
+        },
         function (err, doc) {
             if (!err && !doc) {
 
@@ -68,7 +77,7 @@ router.post("/signup", (req, res, next) => {
 })
 
 router.post("/login", (req, res, next) => {
-  
+
 
     if (!req.body.email || !req.body.password) {
 
@@ -82,7 +91,9 @@ router.post("/login", (req, res, next) => {
         return;
     }
 
-    userModel.findOne({ email: req.body.email },
+    userModel.findOne({
+            email: req.body.email
+        },
         function (err, user) {
             console.log(user);
             if (err) {
@@ -126,9 +137,9 @@ router.post("/login", (req, res, next) => {
                 }).catch(e => {
                     console.log("error: ", e)
                 })
-    
 
-                
+
+
             } else {
                 res.status(403).send({
                     message: "user not found"
@@ -141,4 +152,61 @@ router.post("/logout", (req, res, next) => {
 
     res.send("logout success");
 })
+
+
+
+
+router.post('/forget-password', (req, res, next) => {
+    if (!req.body.email) {
+        res.status(403).send({
+            message: "please provide email"
+        })
+    }
+    userModel.findOne({
+        email: req.body.email
+    }, (err, user) => {
+        if (err) {
+            res.status(500).send({
+                message: "Something went wrong"
+            })
+        } else if (user) {
+            const otp = Math.floor(generetOtp(111111, 999999))
+            otpModel.create({
+                email: req.body.email,
+                otp: otp
+            }).then((data) => {
+                client.sendEmail({
+                    "From": "ahmer_student@sysborg.com",
+                    "To": req.body.email,
+                    "Subject": "Reset Your Password",
+                    "Textbody": `Here is your Reset password code : ${otp}`
+                }, (err, status) => {
+                    if (status) {
+                        res.send({
+                            status: 200,
+                            message: "Email send successfully"
+                        })
+                    } else {
+                        res.send({
+                            message: "An unexpected error occured"
+                        })
+                    }
+                })
+            })
+        } else {
+            res.send({
+                message: "User not found"
+            })
+        }
+    })
+
+})
+
+
+
+
+
+function generetOtp(min, max) {
+    return Math.random() * (max - min) + min;
+}
 module.exports = router;

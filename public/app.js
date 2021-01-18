@@ -1,11 +1,13 @@
 
 // const url = "http://localhost:3000";
 
+// const { default: axios } = require("axios");
+
 function signup() {
     axios({
         method: 'post',
-        url :"https://login-re-password.herokuapp.com/signup",
-        // url: 'http://localhost:3000/signup',
+        // url :"https://login-re-password.herokuapp.com/signup",
+        url: 'http://localhost:3000/signup',
         data: {
             name: document.getElementById("signup-name").value,
             email: document.getElementById("signup-email").value,
@@ -33,8 +35,8 @@ function signup() {
 function userLogin() {
     axios({
         method: 'post',
-        // url: 'http://localhost:3000/login',
-        url :"https://login-re-password.herokuapp.com/login",
+        url: 'http://localhost:3000/login',
+        // url :"https://login-re-password.herokuapp.com/login",
         data: {
             email: document.getElementById('login-email').value,
             password: document.getElementById('login-password').value,
@@ -84,8 +86,8 @@ function userLogin() {
 function getProfile() {
     axios({
         method: 'get',
-        // url: 'http://localhost:3000/profile',
-        url :"https://login-re-password.herokuapp.com/profile",
+        url: 'http://localhost:3000/profile',
+        // url :"https://login-re-password.herokuapp.com/profile",
         credentials: 'include',
     }).then((response) => {
         console.log(response.data.profile.name);
@@ -103,11 +105,36 @@ function getProfile() {
 function logout() {
     axios({
         method: 'post',
-        // url: 'http://localhost:3000/logout',
-        url:'https:login-re-password.herokuapp.com/logout'
+        url: 'http://localhost:3000/logout',
+        // url:'https:login-re-password.herokuapp.com/logout'
     }).then((response) => {
         console.log(response);
         location.href = "./login.html"
+    }, (error) => {
+        console.log(error);
+    });
+    return false
+}
+function forget(){
+    let email = document.getElementById("forget-email").value;
+    localStorage.setitem('email', email)
+    axios({
+        method:'post',
+        url:'http://localhost:3000/forget-password',
+        data:{
+            email:email
+        },
+        withCredentials:true,
+
+
+    }).then((response) => {
+        if (response.data.status === 200) {
+            alert(response.data.message)
+            location.href = "./forget2.html"
+        }
+        else {
+            alert(response.data.message)
+        }
     }, (error) => {
         console.log(error);
     });

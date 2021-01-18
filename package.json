@@ -16,7 +16,8 @@
     "mongoose": "^5.11.11",
     "morgan": "^1.10.0",
     "package.json": "^2.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "postmark": "^2.7.0"
   },
   "devDependencies": {},
   "scripts": {
