@@ -3,8 +3,8 @@ var bcrypt = require("bcrypt-inzi")
 var jwt = require('jsonwebtoken');
 var postmark = require("postmark");
 // var emailApi = process.env.EMAIL_API || "c1085f89-3538-4e2d-8751-faf7125765e6"; 
-var client = new postmark.ServerClient("58bbdaff-7827-4014-9ded-173a915b02b9");
-
+var client = new postmark.ServerClient("b13e0642-c597-4c7d-a9d7-ca1d3cb3a3a2");
+var { otpModel , userModel, } =require("./../dbcon/module");
 
 var {
     userModel
@@ -147,16 +147,15 @@ router.post("/login", (req, res, next) => {
             }
         });
 })
+
 router.post("/logout", (req, res, next) => {
     res.clearCookie('jToken')
 
     res.send("logout success");
 })
 
-
-
-
 router.post('/forget-password', (req, res, next) => {
+    // console.log(req.body.email)
     if (!req.body.email) {
         res.status(403).send({
             message: "please provide email"
@@ -170,27 +169,28 @@ router.post('/forget-password', (req, res, next) => {
                 message: "Something went wrong"
             })
         } else if (user) {
+            console.log(user)
             const otp = Math.floor(generetOtp(111111, 999999))
+            console.log(otp)
+            console.log(req.body.email)
             otpModel.create({
                 email: req.body.email,
                 otp: otp
             }).then((data) => {
                 client.sendEmail({
-                    "From": "ahmer_student@sysborg.com",
+                    "From": "zubair_student@sysborg.com",
                     "To": req.body.email,
                     "Subject": "Reset Your Password",
                     "Textbody": `Here is your Reset password code : ${otp}`
-                }, (err, status) => {
-                    if (status) {
-                        res.send({
-                            status: 200,
-                            message: "Email send successfully"
-                        })
-                    } else {
-                        res.send({
-                            message: "An unexpected error occured"
-                        })
-                    }
+                }).then(()=>{
+                    res.send({
+                        status:200,
+                        message: "success"
+                    })
+                }).catch(()=>{
+                    res.send({
+                        message: "error"
+                    })
                 })
             })
         } else {

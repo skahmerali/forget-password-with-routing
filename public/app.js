@@ -1,8 +1,11 @@
 
-// const url = "http://localhost:3000";
+const url = "http://localhost:3000";
 
 // const { default: axios } = require("axios");
-
+var socket = io(url);
+socket.on('connect', function () {
+    console.log("connected")
+});
 function signup() {
     axios({
         method: 'post',
@@ -29,8 +32,6 @@ function signup() {
 
     return false
 }
-
-
 
 function userLogin() {
     axios({
@@ -81,8 +82,6 @@ function userLogin() {
 
 // }
 
-
-
 function getProfile() {
     axios({
         method: 'get',
@@ -91,23 +90,20 @@ function getProfile() {
         credentials: 'include',
     }).then((response) => {
         console.log(response.data.profile.name);
-        document.getElementById('print-username').value = response.data.profile.name;
-        document.getElementById('print-email').value = response.data.profile.email;
-        document.getElementById('print-number').value = response.data.profile.phone;
-        document.getElementById('print-gender').value = response.data.profile.gender;
+        document.getElementById('print-username').innerText= response.data.profile.name;
+        document.getElementById('print-email').innerText = response.data.profile.email;
+        document.getElementById('print-number').innerText = response.data.profile.phone;
+        document.getElementById('print-gender').innerText = response.data.profile.gender;
+
+        sessionStorage.setItem("userEmail", response.data.profile.email)
+        sessionStorage.setItem("userName", response.data.profile.name)
+
     }, (error) => {
         console.log(error.message);
         location.href = "./login.html"
     });
     return false
 }
-
-
-
-
-
-
-
 
 function forget(){
     let email = document.getElementById("forget-email").value;
@@ -120,9 +116,8 @@ function forget(){
             email:email
         },
         withCredentials:true,
-        
-        
     }).then((response) => {
+        console.log(response)
         if (response.data.status === 200) {
             alert(response.data.message)
             location.href = "./forget2.html"
@@ -148,7 +143,7 @@ function forgetCode() {
     console.log(emailVarification)
     axios({
         method: 'post',
-        url:  url +'/forget-password-step-2',
+        url:  'http://localhost:3000/forget-password-step-2',
         data: ({
             emailVarification: emailVarification,
             newPassword: newPassword,
@@ -196,3 +191,86 @@ function logout() {
     });
     return false
 }
+
+
+
+
+
+function tweet() {
+    // alert("jdsljfa")
+    var tweet = document.getElementById('message').value
+    axios({
+        method: 'post',
+        url: 'http://localhost:3000/tweet',
+        data: {
+            tweet: tweet,
+            userEmail: sessionStorage.getItem("userEmail"),
+            userName: sessionStorage.getItem("userName")
+        },
+        withCredentials: true
+    })
+        .then(function (response) {
+            alert(response.data.message)
+        })
+        .catch(function (error) {
+        });
+
+
+}
+
+function getTweets() {
+    axios({
+        method: 'get',
+        url:  'http://localhost:3000/getTweets',
+        credentials: 'include',
+    }).then((response) => {
+        console.log(response.data)
+        let tweets = response.data;
+        let html = ""
+        tweets.forEach(element => {
+            html += `
+            <div class="tweet">
+            <p class="user-name">${element.name}<p>
+            <p class="tweet-date">${new Date(element.createdOn).toLocaleTimeString()}</p>
+            <p class="tweet-text">${element.tweet}</p>
+            </div>
+            `
+        });
+        document.getElementById('text-area').innerHTML = html;
+
+        // let userTweet = response.data
+
+        // let userHtml = ""
+        // let userName = document.getElementById('pName').innerHTML;
+        // userTweet.forEach(element => {
+        //     if (element.name == userName) {
+        //         userHtml += `
+        //         <div class="tweet">
+        //         <p class="user-name">${element.name}<p>
+        //         <p class="tweet-date">${new Date(element.createdOn).toLocaleTimeString()}</p>
+        //         <p class="tweet-text">${element.tweets}</p>
+        //         </div>
+        //         `
+        //     }
+        // });
+        // document.getElementById('text-area').innerHTML = userHtml;
+    }, (error) => {
+        console.log(error.message);
+    });
+    return false
+}
+
+
+socket.on('NEW_POST', (newPost) => {
+    console.log(newPost)
+    let tweets = newPost;
+    document.getElementById('text-area').innerHTML += `
+    <div class="tweet" style="display: flex;
+    flex-direction: column-reverse;">
+    <p>${newPost.name}<p>
+    <p class="tweet-date">${new Date(tweets.createdOn).toLocaleTimeString()}</p>
+    <p class="tweet-text">${tweets.tweet}</p>
+    </div>
+    `
+
+})

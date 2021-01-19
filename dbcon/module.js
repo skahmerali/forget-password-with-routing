@@ -38,7 +38,37 @@ var userSchema = new mongoose.Schema({
 
 var userModel = mongoose.model("users", userSchema);
 
+var otpSchema = new mongoose.Schema({
+    "name": String,
+    "email": String,
+    "password": String,
+    "otp":String,
+    "createdOn": { "type": Date, "default": Date.now },
+    
+});
+
+
+
+
+
+
+var otpModel = mongoose.model("otp", otpSchema);
+
+
+
+
+
+var tweetSchema = new mongoose.Schema({
+    "tweet": String,
+    "name": String,
+    "email": String,
+    "createdOn": { "type": Date, "default": Date.now },
+});
+var tweetmodel = mongoose.model("tweet", tweetSchema);
+
 
 module.exports = {
     userModel: userModel,
+    otpModel:otpModel,
+    tweetmodel:tweetmodel
 }
