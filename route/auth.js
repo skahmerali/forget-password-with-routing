@@ -205,6 +205,99 @@ router.post('/forget-password', (req, res, next) => {
 
 
 
+api.post("/forget-password-step-2", (req, res, next) => {
+
+    console.log(req.body.otpCode)
+    console.log(req.body.newPassword)
+    console.log(req.body.emailVarification)
+
+    if (!req.body.emailVarification && !req.body.otpCode && !req.body.newPassword) {
+
+        res.status(403).send(`
+            please send emailVarification & otp in json body.
+            e.g:
+            {
+                "emailVarification": "malikasinger@gmail.com",
+                "newPassword": "xxxxxx",
+                "otp": "xxxxx" 
+            }`)
+        return;
+    }
+
+    userModle.findOne({ email: req.body.emailVarification },
+        function (err, user) {
+            console.log(err)
+            if (err) {
+                res.status(500).send({
+                    message: "an error occured: " + JSON.stringify(err)
+                });
+            } else if (user) {
+
+                otpModel.find({ email: req.body.emailVarification },
+                    function (err, otpData) {
+
+                        
+
+                        if (err) {
+                            res.send({
+                                message: "an error occured: " + JSON.stringify(err)
+                            });
+                        } else if (otpData) {
+                            otpData = otpData[otpData.length - 1]
+
+                            console.log("otpData: ", otpData);
+
+                            const now = new Date().getTime();
+                            const otpIat = new Date(otpData.createdOn).getTime();
+                            const diff = now - otpIat;
+
+                            console.log("diff: ", diff);
+
+                            if (otpData.otpCode === req.body.otpCode && diff < 300000) {
+
+                                bcrypt.stringToHash(req.body.newPassword).then(function (hash) {
+                                    user.update({ password: hash }, {}, function (err, data) {
+                                        res.send({
+                                            status:200,
+                                            message:"password updated"
+                                        });
+                                    })
+                                })
+
+                            } else {
+                                res.send({
+                                    message: "incorrect otp"
+                                });
+                            }
+                        } else {
+                            res.send({
+                                message: "incorrect otp"
+                            });
+                        }
+                    })
+
+            } else {
+                res.send({
+                    message: "user not found"
+                });
+            }
+        });
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function generetOtp(min, max) {
     return Math.random() * (max - min) + min;

@@ -102,22 +102,17 @@ function getProfile() {
     return false
 }
 
-function logout() {
-    axios({
-        method: 'post',
-        url: 'http://localhost:3000/logout',
-        // url:'https:login-re-password.herokuapp.com/logout'
-    }).then((response) => {
-        console.log(response);
-        location.href = "./login.html"
-    }, (error) => {
-        console.log(error);
-    });
-    return false
-}
+
+
+
+
+
+
+
 function forget(){
     let email = document.getElementById("forget-email").value;
-    localStorage.setitem('email', email)
+    var Lstorage=localStorage.setitem('email', email);
+    console.log(email)
     axios({
         method:'post',
         url:'http://localhost:3000/forget-password',
@@ -125,8 +120,8 @@ function forget(){
             email:email
         },
         withCredentials:true,
-
-
+        
+        
     }).then((response) => {
         if (response.data.status === 200) {
             alert(response.data.message)
@@ -141,3 +136,63 @@ function forget(){
     return false
 }
 
+
+function forgetCode() {
+    
+    // alert("lafdksals")
+    var otpCode = document.getElementById('forget2-otp').value
+    var newPassword = document.getElementById('forget2-password').value
+    var emailVarification = localStorage.getItem("email")
+    console.log(otpCode)
+    console.log(newPassword)
+    console.log(emailVarification)
+    axios({
+        method: 'post',
+        url:  url +'/forget-password-step-2',
+        data: ({
+            emailVarification: emailVarification,
+            newPassword: newPassword,
+            otpCode: otpCode
+        }),
+        credentials: 'include'
+
+        
+    }).then((response) => {
+        console.log(response.data.message)
+        if (response.data.status == 200) {
+            console.log(response.data.message)
+            if (response.data.status == 200) {
+                alert(response.data.message)
+                window.location.href = "./login.html"
+            } else {
+                alert(response.data.message)
+            }
+            
+        } else {
+            alert(response.data.message)
+        }
+    }, (err) => {
+        console.log(err);
+        alert(err)
+    });
+    
+    
+    return false;
+}
+
+
+
+
+function logout() {
+    axios({
+        method: 'post',
+        url: 'http://localhost:3000/logout',
+        // url:'https:login-re-password.herokuapp.com/logout'
+    }).then((response) => {
+        console.log(response);
+        location.href = "./login.html"
+    }, (error) => {
+        console.log(error);
+    });
+    return false
+}
