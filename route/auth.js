@@ -205,7 +205,7 @@ router.post('/forget-password', (req, res, next) => {
 
 
 
-api.post("/forget-password-step-2", (req, res, next) => {
+router.post("/forget-password-step-2", (req, res, next) => {
 
     console.log(req.body.otpCode)
     console.log(req.body.newPassword)

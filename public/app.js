@@ -111,7 +111,7 @@ function getProfile() {
 
 function forget(){
     let email = document.getElementById("forget-email").value;
-    var Lstorage=localStorage.setitem('email', email);
+    localStorage.setItem('email', email);
     console.log(email)
     axios({
         method:'post',
