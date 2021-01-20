@@ -2,10 +2,15 @@ var express = require('express')
 var bcrypt = require("bcrypt-inzi")
 var jwt = require('jsonwebtoken');
 var postmark = require("postmark");
-var emailApi = process.env.API_TOKEN; 
+var emailApi = process.env.API_TOKEN;
 
 var client = new postmark.ServerClient(emailApi);
-var { otpModel , userModel, } =require("./../dbcon/module");
+var {
+    otpModel,
+    userModel,
+} = require("./../dbcon/module");
+
+
 
 // var {
 //     userModel
@@ -94,9 +99,12 @@ router.post("/login", (req, res, next) => {
 
     userModel.findOne({
             email: req.body.email
+
         },
         function (err, user) {
-            console.log(user);
+
+            console.log("kia han yaha :", user);
+            console.log("kia han yaha :", email);
             if (err) {
                 res.status(500).send({
                     message: "an error occured: " + JSON.stringify(err)
@@ -183,12 +191,12 @@ router.post('/forget-password', (req, res, next) => {
                     "To": req.body.email,
                     "Subject": "Reset Your Password",
                     "Textbody": `Here is your Reset password code : ${otp}`
-                }).then(()=>{
+                }).then(() => {
                     res.send({
-                        status:200,
+                        status: 200,
                         message: "success"
                     })
-                }).catch(()=>{
+                }).catch(() => {
                     res.send({
                         message: "error"
                     })
@@ -225,7 +233,9 @@ router.post("/forget-password-step-2", (req, res, next) => {
         return;
     }
 
-    userModle.findOne({ email: req.body.emailVarification },
+    userModel.findOne({
+            email: req.body.emailVarification
+        },
         function (err, user) {
             console.log(err)
             if (err) {
@@ -234,10 +244,12 @@ router.post("/forget-password-step-2", (req, res, next) => {
                 });
             } else if (user) {
 
-                otpModel.find({ email: req.body.emailVarification },
+                otpModel.find({
+                        email: req.body.emailVarification
+                    },
                     function (err, otpData) {
+                        console.log(req.body.emailVarification)
 
-                        
 
                         if (err) {
                             res.send({
@@ -257,10 +269,12 @@ router.post("/forget-password-step-2", (req, res, next) => {
                             if (otpData.otpCode === req.body.otpCode && diff < 300000) {
 
                                 bcrypt.stringToHash(req.body.newPassword).then(function (hash) {
-                                    user.update({ password: hash }, {}, function (err, data) {
+                                    user.update({
+                                        password: hash
+                                    }, {}, function (err, data) {
                                         res.send({
-                                            status:200,
-                                            message:"password updated"
+                                            status: 200,
+                                            message: "password updated"
                                         });
                                     })
                                 })

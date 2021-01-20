@@ -3,6 +3,8 @@
 const url='https://login-re-password.herokuapp.com';
 // const { default: axios } = require("axios");
 var socket = io(url);
+
+
 socket.on('connect', function () {
     console.log("connected")
 });
@@ -117,9 +119,8 @@ function forget(){
         method:'post',
         url: url + "/forget-password",
         // url :"https://login-re-password.herokuapp.com/forget-password",
-
         data:{
-            email:email
+            email:document.getElementById("forget-email").value
         },
         withCredentials:true,
     }).then((response) => {
@@ -132,6 +133,7 @@ function forget(){
             alert(response.data.message)
         }
     }, (error) => {
+        console.log("error is here")
         console.log(error);
     });
     return false
@@ -144,6 +146,7 @@ function forgetCode() {
     var otpCode = document.getElementById('forget2-otp').value
     var newPassword = document.getElementById('forget2-password').value
     var emailVarification = localStorage.getItem("email")
+
     console.log(otpCode)
     console.log(newPassword)
     console.log(emailVarification)
