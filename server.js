@@ -18,7 +18,7 @@ var io = socketIO(server);
 
 
 io.on("connection", ()=>{
-    console.log("user connected")
+    console.log("user Connected")
 })
 
 

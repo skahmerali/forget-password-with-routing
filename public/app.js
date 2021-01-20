@@ -51,6 +51,7 @@ function userLogin() {
         location.href = "./profile.html"
     }, (error) => {
         console.log(error);
+        alert(response.data.message)
     });
     return false
 
