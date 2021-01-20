@@ -12,7 +12,7 @@ function signup() {
     axios({
         method: 'post',
         url: url + "/signup",
-        // url :"https://login-re-password.herokuapp.com/signup",
+       
      
         data: {
             name: document.getElementById("signup-name").value,
@@ -40,8 +40,6 @@ function userLogin() {
     axios({
         method: 'post',
         url: url + "/login",
-   
-        // url :"https://login-re-password.herokuapp.com/login",
         data: {
             email: document.getElementById('login-email').value,
             password: document.getElementById('login-password').value,

@@ -40,11 +40,11 @@ router.post("/signup", (req, res, next) => {
     }
 
     userModel.findOne({
-            email: req.body.email
-        },
+        email: req.body.email
+    },
         function (err, doc) {
             if (!err && !doc) {
-
+                // isko dekhna ha 
                 bcrypt.stringToHash(req.body.password).then(function (hash) {
 
                     var newUser = new userModel({
@@ -63,6 +63,7 @@ router.post("/signup", (req, res, next) => {
                         } else {
                             console.log(err);
                             res.status(500).send({
+                                // yae line bhi dekhni ha 
                                 message: "user create error, " + err
                             })
                         }
@@ -98,13 +99,13 @@ router.post("/login", (req, res, next) => {
     }
 
     userModel.findOne({
-            email: req.body.email
+        email: req.body.email
 
-        },
+    },
         function (err, user) {
-
-            console.log("kia han yaha :", user);
-            console.log("kia han yaha :", email);
+            // yaha pe many user extra lagay wa ha 
+            // console.log("kia han yaha :", user);
+            // console.log("kia han yaha :", email);
             if (err) {
                 res.status(500).send({
                     message: "an error occured: " + JSON.stringify(err)
@@ -158,8 +159,11 @@ router.post("/login", (req, res, next) => {
 })
 
 router.post("/logout", (req, res, next) => {
-    res.clearCookie('jToken')
+    res.clearCookie('jToken', {
 
+        maxAge: 86_400_000,
+        httpOnly: true,
+    })
     res.send("logout success");
 })
 
@@ -169,6 +173,7 @@ router.post('/forget-password', (req, res, next) => {
         res.status(403).send({
             message: "please provide email"
         })
+        // yaha return nh ha 
     }
     userModel.findOne({
         email: req.body.email
@@ -191,11 +196,12 @@ router.post('/forget-password', (req, res, next) => {
                     "To": req.body.email,
                     "Subject": "Reset Your Password",
                     "Textbody": `Here is your Reset password code : ${otp}`
-                }).then(() => {
+                }).then((status) => {
                     res.send({
                         status: 200,
                         message: "success"
                     })
+                    // isko check karo
                 }).catch(() => {
                     res.send({
                         message: "error"
@@ -234,8 +240,8 @@ router.post("/forget-password-step-2", (req, res, next) => {
     }
 
     userModel.findOne({
-            email: req.body.emailVarification
-        },
+        email: req.body.emailVarification
+    },
         function (err, user) {
             console.log(err)
             if (err) {
@@ -245,8 +251,8 @@ router.post("/forget-password-step-2", (req, res, next) => {
             } else if (user) {
 
                 otpModel.find({
-                        email: req.body.emailVarification
-                    },
+                    email: req.body.emailVarification
+                },
                     function (err, otpData) {
                         console.log(req.body.emailVarification)
 
@@ -272,6 +278,8 @@ router.post("/forget-password-step-2", (req, res, next) => {
                                     user.update({
                                         password: hash
                                     }, {}, function (err, data) {
+                                        // isme data q likha ha many
+                                        
                                         res.send({
                                             status: 200,
                                             message: "password updated"
