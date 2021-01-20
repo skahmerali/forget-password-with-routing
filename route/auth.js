@@ -179,7 +179,7 @@ router.post('/forget-password', (req, res, next) => {
                 otp: otp
             }).then((data) => {
                 client.sendEmail({
-                    "From": "zubair_student@sysborg.com",
+                    "From": "ahmer_student@sysborg.com",
                     "To": req.body.email,
                     "Subject": "Reset Your Password",
                     "Textbody": `Here is your Reset password code : ${otp}`
