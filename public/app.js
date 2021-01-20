@@ -88,7 +88,7 @@ function getProfile() {
     axios({
         method: 'get',
         url: url + "/profile",
-        // url: 'http://localhost:3000/profile',
+
         // url :"https://login-re-password.herokuapp.com/profile",
         credentials: 'include',
     }).then((response) => {
@@ -115,7 +115,6 @@ function forget(){
     axios({
         method:'post',
         url: url + "/forget",
-        // url:'http://localhost:3000/forget-password'
         // url :"https://login-re-password.herokuapp.com/forget-password",
 
         data:{
@@ -150,7 +149,6 @@ function forgetCode() {
     axios({
         method: 'post',
         url: url + "/forget2-otp",
-        // url:  'http://localhost:3000/forget-password-step-2',
         // url :"https://login-re-password.herokuapp.com/forget-password-step-2",
 
         data: ({
@@ -191,7 +189,6 @@ function logout() {
     axios({
         method: 'post',
         url: url + "/logout",
-        // url: 'http://localhost:3000/logout',
         // url:'https:login-re-password.herokuapp.com/logout'
     }).then((response) => {
         console.log(response);
@@ -212,7 +209,6 @@ function tweet() {
     axios({
         method: 'post',
         url: url + "/tweet",
-        // url: 'http://localhost:3000/tweet',
         // url:'https:login-re-password.herokuapp.com/tweet',
         data: {
             tweet: tweet,
@@ -234,7 +230,6 @@ function getTweets() {
     axios({
         method: 'get',
         url: url + "/getTweet",
-        // url:  'http://localhost:3000/getTweets',
         // url:'https:login-re-password.herokuapp.com/getTweets',
         credentials: 'include',
     }).then((response) => {
