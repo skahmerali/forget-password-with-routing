@@ -2,7 +2,7 @@ var express = require('express')
 var bcrypt = require("bcrypt-inzi")
 var jwt = require('jsonwebtoken');
 var postmark = require("postmark");
-var emailApi = process.env.API-TOKEN; 
+var emailApi = process.env.API_TOKEN; 
 
 var client = new postmark.ServerClient(emailApi);
 var { otpModel , userModel, } =require("./../dbcon/module");

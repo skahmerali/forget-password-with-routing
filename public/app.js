@@ -11,7 +11,7 @@ function signup() {
         method: 'post',
         url: url + "/signup",
         // url :"https://login-re-password.herokuapp.com/signup",
-        // url: 'http://localhost:3000/signup',
+     
         data: {
             name: document.getElementById("signup-name").value,
             email: document.getElementById("signup-email").value,
@@ -38,7 +38,7 @@ function userLogin() {
     axios({
         method: 'post',
         url: url + "/login",
-        // url: 'http://localhost:3000/login',
+   
         // url :"https://login-re-password.herokuapp.com/login",
         data: {
             email: document.getElementById('login-email').value,
