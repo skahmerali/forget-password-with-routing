@@ -114,7 +114,7 @@ function forget(){
     console.log(email)
     axios({
         method:'post',
-        url: url + "/forget",
+        url: url + "/forget-password",
         // url :"https://login-re-password.herokuapp.com/forget-password",
 
         data:{
@@ -148,7 +148,7 @@ function forgetCode() {
     console.log(emailVarification)
     axios({
         method: 'post',
-        url: url + "/forget2-otp",
+        url: url + "/forget-password-step-2",
         // url :"https://login-re-password.herokuapp.com/forget-password-step-2",
 
         data: ({
