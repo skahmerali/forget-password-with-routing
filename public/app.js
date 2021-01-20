@@ -9,7 +9,8 @@ socket.on('connect', function () {
 function signup() {
     axios({
         method: 'post',
-        url :"https://login-re-password.herokuapp.com/signup",
+        url: url + "/signup",
+        // url :"https://login-re-password.herokuapp.com/signup",
         // url: 'http://localhost:3000/signup',
         data: {
             name: document.getElementById("signup-name").value,
@@ -36,8 +37,9 @@ function signup() {
 function userLogin() {
     axios({
         method: 'post',
+        url: url + "/login",
         // url: 'http://localhost:3000/login',
-        url :"https://login-re-password.herokuapp.com/login",
+        // url :"https://login-re-password.herokuapp.com/login",
         data: {
             email: document.getElementById('login-email').value,
             password: document.getElementById('login-password').value,
@@ -85,8 +87,9 @@ function userLogin() {
 function getProfile() {
     axios({
         method: 'get',
+        url: url + "/profile",
         // url: 'http://localhost:3000/profile',
-        url :"https://login-re-password.herokuapp.com/profile",
+        // url :"https://login-re-password.herokuapp.com/profile",
         credentials: 'include',
     }).then((response) => {
         console.log(response.data.profile.name);
@@ -111,8 +114,9 @@ function forget(){
     console.log(email)
     axios({
         method:'post',
+        url: url + "/forget",
         // url:'http://localhost:3000/forget-password'
-        url :"https://login-re-password.herokuapp.com/forget-password",
+        // url :"https://login-re-password.herokuapp.com/forget-password",
 
         data:{
             email:email
@@ -145,8 +149,9 @@ function forgetCode() {
     console.log(emailVarification)
     axios({
         method: 'post',
+        url: url + "/forget2-otp",
         // url:  'http://localhost:3000/forget-password-step-2',
-        url :"https://login-re-password.herokuapp.com/forget-password-step-2",
+        // url :"https://login-re-password.herokuapp.com/forget-password-step-2",
 
         data: ({
             emailVarification: emailVarification,
@@ -185,8 +190,9 @@ function forgetCode() {
 function logout() {
     axios({
         method: 'post',
+        url: url + "/logout",
         // url: 'http://localhost:3000/logout',
-        url:'https:login-re-password.herokuapp.com/logout'
+        // url:'https:login-re-password.herokuapp.com/logout'
     }).then((response) => {
         console.log(response);
         location.href = "./login.html"
@@ -205,8 +211,9 @@ function tweet() {
     var tweet = document.getElementById('message').value
     axios({
         method: 'post',
+        url: url + "/tweet",
         // url: 'http://localhost:3000/tweet',
-        url:'https:login-re-password.herokuapp.com/tweet',
+        // url:'https:login-re-password.herokuapp.com/tweet',
         data: {
             tweet: tweet,
             userEmail: sessionStorage.getItem("userEmail"),
@@ -226,8 +233,9 @@ function tweet() {
 function getTweets() {
     axios({
         method: 'get',
+        url: url + "/getTweet",
         // url:  'http://localhost:3000/getTweets',
-        url:'https:login-re-password.herokuapp.com/getTweets',
+        // url:'https:login-re-password.herokuapp.com/getTweets',
         credentials: 'include',
     }).then((response) => {
         console.log(response.data)
