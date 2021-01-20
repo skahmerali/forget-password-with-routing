@@ -184,7 +184,7 @@ router.post('/forget-password', (req, res, next) => {
             console.log(req.body.email)
             otpModel.create({
                 email: req.body.email,
-                otp: otp
+                otpData: otp
             }).then((data) => {
                 client.sendEmail({
                     "From": "ahmer_student@sysborg.com",

@@ -47,11 +47,6 @@ var otpSchema = new mongoose.Schema({
     
 });
 
-
-
-
-
-
 var otpModel = mongoose.model("otp", otpSchema);
 
 
