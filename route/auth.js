@@ -7,9 +7,9 @@ var emailApi = process.env.API-TOKEN;
 var client = new postmark.ServerClient(emailApi);
 var { otpModel , userModel, } =require("./../dbcon/module");
 
-var {
-    userModel
-} = require('./../dbcon/module')
+// var {
+//     userModel
+// } = require('./../dbcon/module')
 var router = express.Router();
 var SERVER_SECRET = process.env.SECRET || "1234";
 
