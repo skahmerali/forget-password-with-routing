@@ -16,6 +16,12 @@ var socketIO = require("socket.io");
 var server = http.createServer(app);
 var io = socketIO(server);
 
+
+io.on("connection", ()=>{
+    console.log("user connected")
+})
+
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 
