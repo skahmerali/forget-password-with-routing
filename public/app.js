@@ -218,7 +218,7 @@ function tweet() {
         withCredentials: true
     })
         .then(function (response) {
-            alert(response.data.message)
+          
         })
         .catch(function (error) {
         });
