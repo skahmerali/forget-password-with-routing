@@ -1,6 +1,6 @@
 
 // const url = "http://localhost:3000";
-const url='https://login-re-password.herokuapp.com';
+const url='https://login-re-password.herokuapp.com/';
 // const { default: axios } = require("axios");
 var socket = io(url);
 socket.on('connect', function () {
