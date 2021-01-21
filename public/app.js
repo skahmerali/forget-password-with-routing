@@ -30,6 +30,7 @@ function signup() {
             alert(response.data.message);
         }
     }).catch((error) => {
+        alert(response.data.message);
         console.log(error);
     });
 
