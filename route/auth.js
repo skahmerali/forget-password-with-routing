@@ -45,7 +45,7 @@ router.post("/signup", (req, res, next) => {
         },
         function (err, doc) {
             if (!err && !doc) {
-                // isko dekhna ha 
+              
                 bcrypt.stringToHash(req.body.password).then(function (hash) {
 
                     var newUser = new userModel({
@@ -64,7 +64,7 @@ router.post("/signup", (req, res, next) => {
                         } else {
                             console.log(err);
                             res.status(500).send({
-                                // yae line bhi dekhni ha 
+                               
                                 message: "user create error, " + err
                             })
                         }
@@ -104,9 +104,7 @@ router.post("/login", (req, res, next) => {
 
         },
         function (err, user) {
-            // yaha pe many user extra lagay wa ha 
-            // console.log("kia han yaha :", user);
-            // console.log("kia han yaha :", email);
+          
             if (err) {
                 res.status(500).send({
                     message: "an error occured: " + JSON.stringify(err)
@@ -129,7 +127,7 @@ router.post("/login", (req, res, next) => {
                             httpOnly: true
 
                         });
-                        // console.log(token)
+                    
 
                         res.send({
                             message: "login success",
@@ -171,13 +169,13 @@ router.post("/logout", (req, res, next) => {
 })
 
 router.post('/forget-password', (req, res, next) => {
-    // console.log(req.body.email)
+  
     if (!req.body.email) {
         res.status(403).send({
             message: "please provide email"
         })
         return;
-        // yaha return nh ha 
+   
     }
     userModel.findOne({
         email: req.body.email
@@ -256,9 +254,6 @@ router.post("/forget-password-step-2", (req, res, next) => {
         },
         function (err, user) {
 
-            console.log( "ahmer mil gaya " + user)
-
-            // console.log("ahmer nahi mil, " + err)
             if (err) {
                 res.status(500).send({
                     message: "an error occured: " + JSON.stringify(err)
