@@ -39,7 +39,7 @@ app.use('/',authRoutes);
 
 app.use(function (req, res, next) {
 
-    console.log("req.cookies: ", req.cookies);
+    console.log("req.cookies: ", req.cookies.jToken);
     if (!req.cookies.jToken) {
         res.status(401).send("include http-only credentials with every request")
         return;

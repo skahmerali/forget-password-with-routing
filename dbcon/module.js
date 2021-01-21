@@ -42,12 +42,12 @@ var otpSchema = new mongoose.Schema({
     "name": String,
     "email": String,
     "password": String,
-    "otp":String,
+    "otpCode":String,
     "createdOn": { "type": Date, "default": Date.now },
     
 });
 
-var otpModel = mongoose.model("otp", otpSchema);
+var otpModel = mongoose.model("otps", otpSchema);
 
 
 

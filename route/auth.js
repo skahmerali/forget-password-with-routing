@@ -5,6 +5,7 @@ var postmark = require("postmark");
 var emailApi = process.env.API_TOKEN;
 
 var client = new postmark.ServerClient(emailApi);
+// var client = new postmark.ServerClient("8f67ff2c-30ce-44fb-8dcb-4931474424de");
 var {
     otpModel,
     userModel,
@@ -40,8 +41,8 @@ router.post("/signup", (req, res, next) => {
     }
 
     userModel.findOne({
-        email: req.body.email
-    },
+            email: req.body.email
+        },
         function (err, doc) {
             if (!err && !doc) {
                 // isko dekhna ha 
@@ -99,9 +100,9 @@ router.post("/login", (req, res, next) => {
     }
 
     userModel.findOne({
-        email: req.body.email
+            email: req.body.email
 
-    },
+        },
         function (err, user) {
             // yaha pe many user extra lagay wa ha 
             // console.log("kia han yaha :", user);
@@ -126,7 +127,9 @@ router.post("/login", (req, res, next) => {
                         res.cookie('jToken', token, {
                             maxAge: 86_400_000,
                             httpOnly: true
+
                         });
+                        // console.log(token)
 
                         res.send({
                             message: "login success",
@@ -173,6 +176,7 @@ router.post('/forget-password', (req, res, next) => {
         res.status(403).send({
             message: "please provide email"
         })
+        return;
         // yaha return nh ha 
     }
     userModel.findOne({
@@ -185,11 +189,11 @@ router.post('/forget-password', (req, res, next) => {
         } else if (user) {
             console.log(user)
             const otp = Math.floor(generetOtp(111111, 999999))
-            console.log(otp)
+            console.log("otp is===>"),
             console.log(req.body.email)
             otpModel.create({
                 email: req.body.email,
-                otpData: otp
+                otpCode: otp
             }).then((data) => {
                 client.sendEmail({
                     "From": "ahmer_student@sysborg.com",
@@ -199,14 +203,22 @@ router.post('/forget-password', (req, res, next) => {
                 }).then((status) => {
                     res.send({
                         status: 200,
-                        message: "success"
+                        message: "success",
+                        otp : otp,
                     })
                     // isko check karo
-                }).catch(() => {
+                }).catch((err) => {
                     res.send({
                         message: "error"
                     })
                 })
+
+                if (user) {
+                    res.send({
+                        message: "User found",
+                        otp
+                    })
+                }
             })
         } else {
             res.send({
@@ -219,14 +231,14 @@ router.post('/forget-password', (req, res, next) => {
 
 
 
-
 router.post("/forget-password-step-2", (req, res, next) => {
 
-    console.log(req.body.otpCode)
-    console.log(req.body.newPassword)
-    console.log(req.body.emailVarification)
+    console.log("mera otp " + req.body.otpCode)
 
-    if (!req.body.emailVarification && !req.body.otpCode && !req.body.newPassword) {
+    console.log("mera password " + req.body.newPassword)
+    console.log("mera email " + req.body.emailVarification)
+
+    if (!req.body.emailVarification || !req.body.otpCode || !req.body.newPassword) {
 
         res.status(403).send(`
             please send emailVarification & otp in json body.
@@ -240,10 +252,13 @@ router.post("/forget-password-step-2", (req, res, next) => {
     }
 
     userModel.findOne({
-        email: req.body.emailVarification
-    },
+            email: req.body.emailVarification
+        },
         function (err, user) {
-            console.log(err)
+
+            console.log( "ahmer mil gaya " + user)
+
+            // console.log("ahmer nahi mil, " + err)
             if (err) {
                 res.status(500).send({
                     message: "an error occured: " + JSON.stringify(err)
@@ -251,10 +266,13 @@ router.post("/forget-password-step-2", (req, res, next) => {
             } else if (user) {
 
                 otpModel.find({
-                    email: req.body.emailVarification
-                },
+                        email: user.email
+                    },{},
                     function (err, otpData) {
-                        console.log(req.body.emailVarification)
+
+                        console.log( "ye otp hai  " + otpData)
+                        console.log( " otp mondel ka errra hai "  +    err)
+
 
 
                         if (err) {
@@ -273,18 +291,19 @@ router.post("/forget-password-step-2", (req, res, next) => {
                             console.log("diff: ", diff);
 
                             if (otpData.otpCode === req.body.otpCode && diff < 300000) {
+                                console.log(" sab se bada masla hai " + otpData.otpCode)
 
+                                
                                 bcrypt.stringToHash(req.body.newPassword).then(function (hash) {
                                     user.update({
-                                        password: hash
-                                    }, {}, function (err, data) {
-                                        // isme data q likha ha many
-                                        
-                                        res.send({
-                                            status: 200,
-                                            message: "password updated"
-                                        });
-                                    })
+                                            password: hash
+                                        }, {},
+                                        function (err, data) {
+                                            res.send({
+                                                status: 200,
+                                                message: "password updated"
+                                            });
+                                        }).then(err=>console.log("aya",err))
                                 })
 
                             } else {
@@ -294,18 +313,102 @@ router.post("/forget-password-step-2", (req, res, next) => {
                             }
                         } else {
                             res.send({
-                                message: "incorrect otp"
+                                message: "incorrect otp ye kia "
                             });
                         }
                     })
 
             } else {
                 res.send({
-                    message: "user not found"
+                    message: "user  not found"
                 });
             }
         });
 })
+// router.post("/forget-password-step-2", (req, res, next) => {
+
+//     console.log(req.body.otpCode)
+//     console.log(req.body.newPassword)
+//     console.log(req.body.emailVarification)
+
+//     if (!req.body.emailVarification && !req.body.otpCode && !req.body.newPassword) {
+
+//         res.status(403).send(`
+//             please send emailVarification & otp in json body.
+//             e.g:
+//             {
+//                 "emailVarification": "malikasinger@gmail.com",
+//                 "newPassword": "xxxxxx",
+//                 "otp": "xxxxx" 
+//             }`)
+//         return;
+//     }
+
+//     userModel.findOne({email: req.body.emailVarification},
+//         function (err, user) {
+//             console.log(req.body.emailVarification)
+//             console.log(err)
+//             if (err) {
+//                 res.status(500).send({
+//                     message: "an error occured: " + JSON.stringify(err)
+//                 });
+//             } else if (user) {
+//                 console.log(user)
+
+//                 otpModel.find({
+//                     email: req.body.emailVarification
+//                 },
+//                     function (err, otpData) {
+//                         console.log(req.body.emailVarification)
+
+
+//                         if (err) {
+//                             res.send({
+//                                 message: "an error occured: " + JSON.stringify(err)
+//                             });
+//                         } else if (otpData) {
+//                             otpData = otpData[otpData.length - 1]
+
+//                             console.log("otpData: ", otpData);
+
+//                             const now = new Date().getTime();
+//                             const otpIat = new Date(otpData.createdOn).getTime();
+//                             const diff = now - otpIat;
+
+//                             console.log("diff: ", diff);
+
+//                             if (otpData.otpCode === req.body.otpCode && diff < 300000) {
+
+//                                 bcrypt.stringToHash(req.body.newPassword).then(function (hash) {
+//                                     user.update({password:hash }, {}, function (err, data) {
+//                                         // isme data q likha ha many
+
+//                                         res.send({
+//                                             status: 200,
+//                                             message: "password updated"
+//                                         });
+//                                     })
+//                                 })
+
+//                             } else {
+//                                 res.send({
+//                                     message: "incorrect otp"
+//                                 });
+//                             }
+//                         } else {
+//                             res.send({
+//                                 message: "incorrect otp"
+//                             });
+//                         }
+//                     })
+
+//             } else {
+//                 res.send({
+//                     message: "user not found"
+//                 });
+//             }
+//         });
+// })
 
 
 
