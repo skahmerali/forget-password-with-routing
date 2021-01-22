@@ -8,11 +8,17 @@
 body{
     margin: 0px;
     padding: 0px;
-    background-color:  rgb(129, 188, 96);
+    background-color: rgb(129, 188, 96);
 }
 .myprofile{
     text-align: center;
 }
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
 p{
     color: rgb(104, 99, 99);
 
@@ -28,7 +34,6 @@ p{
     padding: 10px;
     margin: 50px auto;
     height: auto;
-   
     
 }
 .logout{
@@ -43,27 +48,24 @@ p{
 }
 
 .tweet{
-    box-shadow: 5px 3px 10px  rgb(129, 188, 96);
+    box-shadow: 5px 3px 10px rgb(129, 188, 96);
     border-radius: 10px;
     margin: 10px 0px 10px 0px;
-
     
 }
 #text-area{
-
     display: flex;
     flex-direction: column-reverse;
-  
 }
 .tweet-text{
-    color:  rgb(129, 188, 96);
-    font-size: 12px;
+    color: rgb(129, 188, 96);
+    font-size: 22px;
     font-family: sans-serif;
     font-weight: bold;
 }
 .user-name{
     font-size: 22px;
-    color: rgb(129, 188, 96);
+    color:rgb(129, 188, 96)
         
 };
 
@@ -78,7 +80,7 @@ p{
     height: 40px;
     border-radius:10px;
     border: none;
-    background-color:rgb(129, 188, 96);
+    background-color: rgb(129, 188, 96);
     color: white;
 }
 
@@ -90,10 +92,13 @@ input{
     border: none;
     width: 280px;
     padding: 15px;
-    background-color: rgb(129, 188, 96);
+    background-color:  rgb(129, 188, 96);
 }
 
 ::placeholder {
     color: white;
     opacity: 1; 
   }
+
+
+

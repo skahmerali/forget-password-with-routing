@@ -1,6 +1,6 @@
 
-// const url = "http://localhost:3000";
-const url='https://new-tweeter-app.herokuapp.com';
+const url = "http://localhost:3000";
+// const url='https://new-tweeter-app.herokuapp.com';
 // const { default: axios } = require("axios");
 var socket = io(url);
 
@@ -50,9 +50,12 @@ function userLogin() {
         console.log(response);
         alert(response.data.message)
         location.href = "./profile.html"
+        
     }, (error) => {
         console.log(error);
         alert(response.data.message)
+    }).catch(function (error) {
+        alert("PASSWORD OR EMAIL IS WRONG"+error.response.data.message)
     });
     return false
 
@@ -185,9 +188,6 @@ function forgetCode() {
     return false;
 }
 
-
-
-
 function logout() {
     axios({
         method: 'post',
@@ -201,10 +201,6 @@ function logout() {
     });
     return false
 }
-
-
-
-
 
 function tweet() {
     // alert("jdsljfa")
@@ -230,9 +226,10 @@ function tweet() {
 }
 
 function getTweets() {
+
     axios({
         method: 'get',
-        url: url + "/getTweet",
+        url: url + "/getTweets",
         // url:'https:login-re-password.herokuapp.com/getTweets',
         credentials: 'include',
     }).then((response) => {
@@ -250,27 +247,71 @@ function getTweets() {
         });
         document.getElementById('text-area').innerHTML = html;
 
-        // let userTweet = response.data
+        let userTweet = response.data
 
-        // let userHtml = ""
-        // let userName = document.getElementById('pName').innerHTML;
-        // userTweet.forEach(element => {
-        //     if (element.name == userName) {
-        //         userHtml += `
-        //         <div class="tweet">
-        //         <p class="user-name">${element.name}<p>
-        //         <p class="tweet-date">${new Date(element.createdOn).toLocaleTimeString()}</p>
-        //         <p class="tweet-text">${element.tweets}</p>
-        //         </div>
-        //         `
-        //     }
-        // });
-        // document.getElementById('text-area').innerHTML = userHtml;
+        let userHtml = ""
+        let userName = document.getElementById('pName').innerHTML;
+        userTweet.forEach(element => {
+            if (element.name == userName) {
+                userHtml += `
+                <div class="tweet">
+                <p class="user-name">${element.name}<p>
+                <p class="tweet-date">${new Date(element.createdOn).toLocaleTimeString()}</p>
+                <p class="tweet-text">${element.tweets}</p>
+                </div>
+                `
+            }
+        });
+        document.getElementById('text-area').innerHTML = userHtml;
     }, (error) => {
         console.log(error.message);
     });
     return false
 }
+
+function getMyTweets() {
+    axios({
+        method: 'get',
+        url: url + '/getTweets',
+        credentials: 'include',
+    }).then((response) => {
+
+        let userTweet = response.data
+        console.log(response.data)
+        let userHtml = ""
+        let userName = document.getElementById('print-username').innerText      ;
+        console.log(userName)
+        userTweet.forEach(element => {
+            if (element.name === userName){
+                userHtml += `
+                <div class="tweet">
+                <p class="user-name">${element.name}<p>
+                <p class="tweet-date">${new Date(element.createdOn).toLocaleTimeString()}</p>
+                <p class="tweet-text">${element.tweet}</p>
+                </div>
+                `
+            }
+        });
+        // console.log(userHtml)
+        document.getElementById('usertext-area').innerHTML = userHtml;
+    }, (error) => {
+        console.log(error.message);
+    });
+    return false
+}
+
+
+function change(){
+    var change = document.getElementById("change").src
+}
+
+
+
+
+
+
+
+
 
 
 socket.on('NEW_POST', (newPost) => {
@@ -285,3 +326,41 @@ socket.on('NEW_POST', (newPost) => {
     `
     
 })
+
+
+
+function upload() {
+
+    var fileInput = document.getElementById("fileInput");
+
+
+    console.log("fileInput: ", fileInput);
+    console.log("fileInput: ", fileInput.files[0]);
+
+    let formData = new FormData();
+
+    formData.append("myFile", fileInput.files[0]); 
+    formData.append("myName", "malik"); 
+    formData.append("myDetails",
+        JSON.stringify({
+            "subject": "Science",  
+            "year": "2021"
+        })
+    );
+
+    axios({
+        method: 'post',
+        url: "http://localhost:3000/upload",
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })
+        .then(res => {
+            console.log(`upload Success` + res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+    return false; 
+
+}
