@@ -5,7 +5,7 @@ var postmark = require("postmark");
 var emailApi = process.env.API_TOKEN;
 
 var client = new postmark.ServerClient(emailApi);
-// var client = new postmark.ServerClient("8f67ff2c-30ce-44fb-8dcb-4931474424de");
+// var client = new postmark.ServerClient("");
 var {
     otpModel,
     userModel,

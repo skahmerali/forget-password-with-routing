@@ -53,10 +53,11 @@ function userLogin() {
         
     }, (error) => {
         console.log(error);
-        alert(response.data.message)
-    }).catch(function (error) {
-        alert("PASSWORD OR EMAIL IS WRONG"+error.response.data.message)
-    });
+        // alert(response.data.message)
+    })
+    // .catch(function (error) {
+    //     alert("PASSWORD OR EMAIL IS WRONG"+error.response.data.message)
+    // });
     return false
 
 }
