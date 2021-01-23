@@ -52,8 +52,8 @@ function userLogin() {
         location.href = "./profile.html"
         
     }, (error) => {
+        alert(error.data.message)
         console.log(error);
-        // alert(response.data.message)
     })
     // .catch(function (error) {
     //     alert("PASSWORD OR EMAIL IS WRONG"+error.response.data.message)
@@ -106,6 +106,12 @@ function getProfile() {
 
         sessionStorage.setItem("userEmail", response.data.profile.email)
         sessionStorage.setItem("userName", response.data.profile.name)
+
+        console.log('dklafhasdhaskljas' + response.data.profile.profilePic)
+        document.getElementById('img').src = response.data.profile.profilePic
+        
+        
+        
 
     }, (error) => {
         console.log(error.message);
@@ -302,16 +308,6 @@ function getMyTweets() {
 }
 
 
-function change(){
-    var change = document.getElementById("change").src
-}
-
-
-
-
-
-
-
 
 
 
@@ -341,7 +337,7 @@ function upload() {
     let formData = new FormData();
 
     formData.append("myFile", fileInput.files[0]); 
-    formData.append("myName", "malik"); 
+    formData.append("email", sessionStorage.getItem('userEmail')); 
     formData.append("myDetails",
         JSON.stringify({
             "subject": "Science",  
@@ -351,12 +347,16 @@ function upload() {
 
     axios({
         method: 'post',
-        url: "http://localhost:3000/upload",
+        url: url + "/upload",
+       
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' }
     })
         .then(res => {
-            console.log(`upload Success` + res.data);
+            console.log(`upload Success` + res.data.picture);
+            console.log(res.data.picture);
+
+   
         })
         .catch(err => {
             console.log(err);
@@ -364,4 +364,21 @@ function upload() {
 
     return false; 
 
+}
+
+function previewFile() {
+    // const preview = document.getElementById('profilePic').style.backgroundImage;
+    const preview = document.querySelector('img');
+    console.log(preview)
+    const file = document.querySelector('input[type=file]').files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+        // convert image file to base64 string
+        preview.src = reader.result;
+    }, false);
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
 }

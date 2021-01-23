@@ -203,7 +203,13 @@
 </div>
 
     <div class="profile">
-		<h1>Profile</h1>
+        <h1>Profile</h1>
+        
+        <!-- <div>
+            <input type="file" name="" id="fileInput">
+            <button onclick="upload()">upload</button>
+        </div> -->
+
 		<form action="#" onsubmit="return upload()">
             <label class="filebutton">
                 <div class="imageUpdate">
@@ -215,7 +221,7 @@
                     </div>
                 </div>
                 <span><input class="opacityFile" type="file" id="fileInput" name="myfile"
-                        onchange="upload()">
+                        onchange="upload(); previewFile()">
                 </span>
             </label>
         </form>

@@ -141,7 +141,8 @@ router.post("/login", (req, res, next) => {
 
                     } else {
                         console.log("not matched");
-                        res.status(401).send({
+                        res.send({
+                            status:401,
                             message: "incorrect password"
                         })
                     }
@@ -152,8 +153,9 @@ router.post("/login", (req, res, next) => {
 
 
             } else {
-                res.status(403).send({
-                    message: "user not found"
+                res.send({
+                    status :403,
+                    message : "user not found"
                 });
             }
         });

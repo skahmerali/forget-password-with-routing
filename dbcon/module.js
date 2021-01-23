@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-
+// var dbURI = process.env.DBURI
 let dbURI = "mongodb+srv://ahmerali:ahmerali@cluster0.slkv6.mongodb.net/ahmerali";
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
