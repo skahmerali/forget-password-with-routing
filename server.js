@@ -31,18 +31,7 @@ var upload = multer({ storage: storage })
 const admin = require("firebase-admin");
 
 // var serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT);
-var serviceAccount = {
-    "type": "service_account",
-    "project_id": "tweeter0001-16162",
-    "private_key_id": "825f68f7141a00fa36a7a532406b53ce10109529",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDLTbAnwTqDCzJb\nbuxAff2EPEzsB7us689uxKowtJ1d0sdlKGTHBWKpprFUnwNpeHnsmskNFn4bXadB\nbjvc7eyuC43xW+PrpBpvQ8dXaJsEoKy9fsfwcn0hlLWSrrLFspJx8UiIyg8Ynazt\ntmjQAun0d1RaApXXQteGmUr/HmGsZTaLgXfymHs2mFDEoX0ZB8wWJvFC7QlxSyX8\nb+BfnKUCI63fmJytpZKcukJU2GRwlBInrzMTrJ/79TceqAvYzfxMfUPIPtNArpeH\nf5eUR1U6TfMV3wTO9L0EBzTSqBJKhFgtkaGeBmhxAXf39tk+yI96yNBLYWxz/EO1\n8sv9kVXHAgMBAAECggEASi8c+kSt/ydUxrxhBN90ZI5EW1QvDVg2puqoV4Fwcs34\n6Fam/2Bdsh4bUw97BT9q7gVFG7t7ZKz13RBGU8WVuaSJtOqc7l1BMByBXsnS1wty\nPOtINdrxAhHrd4y7uxwACAfNOezROWA/u7X15QFLMWNhqj6LQrMnRfwlu5XweiEF\ntXJ+wAfpaQYcdPgBna0Eog6PK4aCE+B02bV9V4rTvdY1v960Kv3ez1gdAKlRLl/y\nFIGz3fanMb3XeGQVf4CYNohOo/Jsi3bvvbfbyEpdPyefVtYIjBmLxs4BjgvrAgvS\nMeuYxD9yHhbR2TZYZS09yPvvZ6jstSCNaQwAihjgcQKBgQD0XfCkdbDBKdu+Nx8S\nRgli2TN1iwFA19obQ/YD/ueTVr/rOxq1sS/I6B9PfktW3RNnCILFJx/VRooeBFFa\ncp1jErKFZQgaVqGet/INBsXN1qDaB20sSOegqoLvn96x4bUFbx2tx3O6QNhCZL6s\nP/+nylWxXKJByN7Rd3tzzQwKwwKBgQDU+1BsLcQ8IJFD92CPzYGLWq1JuZ2pnWsK\nDhzSqv+Va3sv9h+crNXxTRPpY1GT3QM+VRuY2tEezZnCTdWn4EpWItA7yJQ2+lPu\n7werZOkziAVot+P9SISJjwBWdE6ZnhG2lPDqZeO8Jwe+/AUCi1MC0Dmm7wAJAuH8\nG418pliwrQKBgBmsCMzuREx2vkwkdFIyI2hMEzjlCpOqWZKFuEHBNMjo0y6+Pdca\nrz93C1sJlJaikRhA76QQsSpxx67Rm05aPiibXT/gVlKWCVKoVniB3qP6SVm+b/y4\nCAV8BFdyPy4G3UKd4stP6duGVnHbLaDg9FXHTutcJPuuQ6JT4BdRUlOLAoGBANQa\nsD372ikTOfgY/YZY4EFa/aalfvlzNy1dXqEDAOPalWTvVQ4gJjRYUZMlgRGjkl5a\nPdCdYpOtqAoUn8m/GejsZLqVB940sLAMRnQPXBsgxFpEgH424R9pVanDzJ86B2Pw\nsniNHh68M/+kVozxGat8mV3BOSTARTRgcCiKNVtFAoGAd0pYwijqVuN0K4ylsY8A\nBW+x6jBNHEIPtJOT/sLTmIGAeKfxG+FrNG4qg7jPBYPFoLSvaJvWAnlLiOygSSIb\nQgdLm7z6j8Pm9ZYFTH4M8coykcc5/QLWrRNt1sMNbuMPdA4Ov16PwOetbxAC6jXe\nolXWm12hF4CGWse7/pdWWIY=\n-----END PRIVATE KEY-----\n",
-    "client_email": "firebase-adminsdk-i3zg9@tweeter0001-16162.iam.gserviceaccount.com",
-    "client_id": "102636446531776556099",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-i3zg9%40tweeter0001-16162.iam.gserviceaccount.com"
-}
+var serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT)
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://tweeter0001-16162-default-rtdb.firebaseio.com/"
@@ -125,37 +114,70 @@ app.get("/profile", (req, res, next) => {
             }
         })
 })
+app.post(`/tweet`, (req, res, next)=>{
 
-
-app.post('/tweet', (req, res, next) => {
-    // console.log(req.body)
-
-    if (!req.body.userName && !req.body.tweet || !req.body.userEmail) {
-        res.status(403).send({
-            message: "please provide email or tweet/message"
-        })
-    }
-    var newTweet = new tweetmodel({
-        "name": req.body.userName,
-        "tweet": req.body.tweet
-    })
-    newTweet.save((err, data) => {
+    
+    userModel.findOne({ email: req.body.userEmail }, (err, user) => {
+        // console.log("khsajhfkjdha" + user)
         if (!err) {
-            res.send({
-                status: 200,
-                message: "Post created",
-                data: data
-            })
-            console.log(data.tweet)
-            io.emit("NEW_POST", data)
-        } else {
-            console.log(err);
-            res.status(500).send({
-                message: "user create error, " + err
+            tweetmodel.create({
+                "name": req.body.userName,
+                "tweet": req.body.tweet,
+                "profilePic": user.profilePic
+            }).then((data) => {
+                // console.log( "jdjhkasjhfdk" +  data)
+                res.send({
+                    status: 200,
+                    message: "Post created",
+                    data: data
+                })
+                
+                console.log(data)
+                io.emit("NEW_POST", data)
+                
+            }).catch(() => {
+                console.log(err);
+                res.status(500).send({
+                    message: "user create error, " + err
+                })
             })
         }
-    });
+        else {
+            console.log(err)
+        }
+    })
+    
 })
+
+// app.post('/tweet', (req, res, next) => {
+//     // console.log(req.body)
+
+//     if (!req.body.userName && !req.body.tweet || !req.body.userEmail) {
+//         res.status(403).send({
+//             message: "please provide email or tweet/message"
+//         })
+//     }
+//     var newTweet = new tweetmodel({
+//         "name": req.body.userName,
+//         "tweet": req.body.tweet
+//     })
+//     newTweet.save((err, data) => {
+//         if (!err) {
+//             res.send({
+//                 status: 200,
+//                 message: "Post created",
+//                 data: data
+//             })
+//             console.log(data.tweet)
+//             io.emit("NEW_POST", data)
+//         } else {
+//             console.log(err);
+//             res.status(500).send({
+//                 message: "user create error, " + err
+//             })
+//         }
+//     });
+// })
 
 app.get('/getTweets', (req, res, next) => {
 
@@ -221,12 +243,12 @@ app.post("/upload", upload.any(), (req, res, next) => {
                         })
                         try {
                             fs.unlinkSync(req.files[0].path)
-                           
+
                         } catch (err) {
                             console.error(err)
                         }
 
-                        
+
                     }
                 })
             } else {

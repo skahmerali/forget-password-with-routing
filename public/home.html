@@ -23,7 +23,12 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./socket.io.js"></script>
     <style>
-        .myClass {
+     .filebutton{
+        width: 1000px;
+        height: 1000px;
+        background-color: rgb(112, 163, 207);
+    }
+    .myClass {
         display: block !important;
         list-style: none;
         padding: 10px;
@@ -64,7 +69,11 @@
 
     .imageUpdate {
         position: relative;
-        width: 100%;
+        /* right: 5px; */
+        left: 20px;
+        width: 200px;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 5px 3px 20px 10px rgb(255, 255, 255);
     }
 
     .img {
@@ -106,20 +115,22 @@
 </head>
 
 <body onload="getProfile(); getMyTweets()">
+    <h1>Profile</h1>
     <div>
-        <h1>Profile</h1>
-        <button class="logout" onclick="return logout()">Log out</button>
-        <button class="logout"><a href="profile.html">Other Tweet</a> </button>
+        
+        <button class="logout upper" onclick="return logout()">Log out</button>
+    
+        <button class="logout upper"><a href="profile.html">Other Tweet</a> </button>
     </div>
     <form onsubmit="return upload()">
         <!-- dont get confused with return keyword inside onsubmit, it is there to prevent html page to reload/default behaviour, and this have nothing to do with actual file upload process but if you remove it page will reload on submit -->
 
-        <input required type="file" id="fileInput">
-        <button type="submit"> Upload </button>
+        <!-- <input required type="file" id="fileInput">
+        <button type="submit"> Upload </button> -->
     </form>
-<!-- 
-    <div class="profile">
-        <div style="width: 200px; height: 200px; border-radius: 100%; border: 2px solid black;">
+
+    <div class="profile left">
+        <!-- <div style="width: 200px; height: 200px; border-radius: 100%; border: 2px solid black;">
             <div class="pic">
                 <div class="text">
                     <img src="new.png" alt="" id="change" onclick="change()">
@@ -137,27 +148,38 @@
                         <div class="text"></div>
                     </div>
                 </div>
-                <span><input class="opacityFile" type="file" id="fileInput" name="myfile"
-                        onchange="upload()">
+                <span>
+                    <input class="opacityFile" type="file" id="fileInput" name="myfile"
+                        onchange="upload(); previewFile()">
                 </span>
             </label>
         </form>
-        <div id="print-username"></div>
-        <div id="print-email"></div>
-        <div id="print-number"></div>
-        <div id="print-gender"></div>
-    </div>
-    <div class="chatpp">
-        <div class="myprofile">
-            <h1>My Profile</h1>
+        <div class="center">
+            
+            <div id="print-username"></div>
+            <div id="print-email"></div>
+            <div id="print-number"></div>
+            <div id="print-gender"></div>
         </div>
+    </div>
+
+
+    
+    <div class="chatapp right">
+        <!-- <div class="myprofile">
+            <h1>My Profile</h1>
+        </div> -->
         <div>
-            <input type="text" name="" id="message" style="margin:5px ;" placeholder="Type your message....">
-            <button class="post" onclick=" return tweet()">Post</button>
+            <!-- <input type="text" name="" id="message" style="margin:5px ;" placeholder="Type your message...."> -->
+            <!-- <button class="post" onclick=" return tweet()">Post</button> -->
 
 
+        </div>
+        <div class="welcome">
+            WELCOME TO YOUR PROFILE
         </div>
         <div id="usertext-area">
+
             <div class="tweet">
                 <p class="user-name">HEllo!
                     <p>

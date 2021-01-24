@@ -106,7 +106,14 @@
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="./socket.io.js"></script>
 	<style>
-        .myClass {
+
+
+    .filebutton{
+        width: 1000px;
+        height: 1000px;
+        background-color: rgb(112, 163, 207);
+    }
+    .myClass {
         display: block !important;
         list-style: none;
         padding: 10px;
@@ -147,7 +154,11 @@
 
     .imageUpdate {
         position: relative;
-        width: 100%;
+        /* right: 5px; */
+        left: 20px;
+        width: 200px;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 5px 3px 20px 10px rgb(255, 255, 255);
     }
 
     .img {
@@ -191,18 +202,9 @@
 <body onload="getProfile(); getTweets()">
 
 	
-    <div>
-      
-        <!-- <button class="logout" onclick="return logout()">Log out</button> -->
-        <button class="logout"><a href="Home.html">My Tweet</a> </button>
-        <!-- <button class="logout" onclick="return logout()">Log out</button> -->
-    </div>
-<div>
-  
-    <button class="logout" onclick="return logout()">Log out</button>
-</div>
 
-    <div class="profile">
+
+    <div class="profile left">
         <h1>Profile</h1>
         
         <!-- <div>
@@ -225,12 +227,29 @@
                 </span>
             </label>
         </form>
+        <div class="center">
         <div id="print-username"></div>
         <div id="print-email"></div>
         <div id="print-number"></div>
-		<div id="print-gender"></div>
+        <div id="print-gender"></div>
+
+        </div>
+        <span>
+      
+            <!-- <button class="logout" onclick="return logout()">Log out</button> -->
+            <button class="logout"><a href="Home.html">My Tweet</a> </button>
+            <!-- <button class="logout" onclick="return logout()">Log out</button> -->
+        </span>
+        <!-- <br>
+        <br>
+        <br>
+        <br> -->
+    <span>
+      
+        <button class="logout" onclick="return logout()">Log out</button>
+    </span>
     </div>
-    <div class="chatpp">
+    <div class="chatapp right">
         <div class="myprofile">
             <h1>CHIT & CHAT</h1>
         </div>

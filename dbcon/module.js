@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
-var dbURI = process.env.DBURI
-// let dbURI = "mongodb+srv://ahmerali:ahmerali@cluster0.slkv6.mongodb.net/ahmerali";
+// var dbURI = process.env.DBURI
+let dbURI = "mongodb+srv://ahmerali:ahmerali@cluster0.slkv6.mongodb.net/ahmerali";
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.on('connected', function () {
@@ -58,6 +58,7 @@ var tweetSchema = new mongoose.Schema({
     "tweet": String,
     "name": String,
     "email": String,
+    "profilePic": String,
     "createdOn": { "type": Date, "default": Date.now },
 });
 var tweetmodel = mongoose.model("tweet", tweetSchema);

@@ -12,8 +12,8 @@ function signup() {
     axios({
         method: 'post',
         url: url + "/signup",
-       
-     
+
+
         data: {
             name: document.getElementById("signup-name").value,
             email: document.getElementById("signup-email").value,
@@ -50,7 +50,7 @@ function userLogin() {
         console.log(response);
         alert(response.data.message)
         location.href = "./profile.html"
-        
+
     }, (error) => {
         alert(error.data.message)
         console.log(error);
@@ -99,7 +99,7 @@ function getProfile() {
         credentials: 'include',
     }).then((response) => {
         console.log(response.data.profile.name);
-        document.getElementById('print-username').innerText= response.data.profile.name;
+        document.getElementById('print-username').innerText = response.data.profile.name;
         document.getElementById('print-email').innerText = response.data.profile.email;
         document.getElementById('print-number').innerText = response.data.profile.phone;
         document.getElementById('print-gender').innerText = response.data.profile.gender;
@@ -109,9 +109,9 @@ function getProfile() {
 
         console.log('dklafhasdhaskljas' + response.data.profile.profilePic)
         document.getElementById('img').src = response.data.profile.profilePic
-        
-        
-        
+
+
+
 
     }, (error) => {
         console.log(error.message);
@@ -120,18 +120,18 @@ function getProfile() {
     return false
 }
 
-function forget(){
+function forget() {
     let email = document.getElementById("forget-email").value;
     localStorage.setItem('email', email);
     console.log(email)
     axios({
-        method:'post',
+        method: 'post',
         url: url + "/forget-password",
         // url :"https://login-re-password.herokuapp.com/forget-password",
-        data:{
-            email:document.getElementById("forget-email").value
+        data: {
+            email: document.getElementById("forget-email").value
         },
-        withCredentials:true,
+        withCredentials: true,
     }).then((response) => {
         console.log(response)
         if (response.data.status === 200) {
@@ -150,7 +150,7 @@ function forget(){
 
 
 function forgetCode() {
-    
+
     // alert("lafdksals")
     var otpCode = document.getElementById('forget2-otp').value
     var newPassword = document.getElementById('forget2-password').value
@@ -171,7 +171,7 @@ function forgetCode() {
         }),
         credentials: 'include'
 
-        
+
     }).then((response) => {
         console.log(response.data.message)
         if (response.data.status == 200) {
@@ -182,7 +182,7 @@ function forgetCode() {
             } else {
                 alert(response.data.message)
             }
-            
+
         } else {
             alert(response.data.message)
         }
@@ -190,8 +190,8 @@ function forgetCode() {
         console.log(err);
         alert(err)
     });
-    
-    
+
+
     return false;
 }
 
@@ -209,6 +209,7 @@ function logout() {
     return false
 }
 
+
 function tweet() {
     // alert("jdsljfa")
     var tweet = document.getElementById('message').value
@@ -224,7 +225,7 @@ function tweet() {
         withCredentials: true
     })
         .then(function (response) {
-          
+
         })
         .catch(function (error) {
         });
@@ -246,30 +247,16 @@ function getTweets() {
         tweets.forEach(element => {
             html += `
             <div class="tweet">
-            <p class="user-name">${element.name}<p>
-            <p class="tweet-date">${new Date(element.createdOn).toLocaleTimeString()}</p>
-            <p class="tweet-text">${element.tweet}</p>
+            <img src="${element.profilePic}"alt="picture" style = " width : 50px ; height : 50px; background: rgb(129, 188, 96); ; border: 2px solid green; border-radius: 100%; >
+            <span class="user-name" style=" text-transform:uppercase;   font-size:20px;  font-style: italic; font-face: sens-sarif ">${element.name}<span>
+            <p class="tweet-date" style=" text-align:right;">${new Date(element.createdOn).toLocaleTimeString()}</p>
+            <p class="tweet-text" >${element.tweet}</p>
             </div>
             `
         });
         document.getElementById('text-area').innerHTML = html;
 
-        let userTweet = response.data
-
-        let userHtml = ""
-        let userName = document.getElementById('pName').innerHTML;
-        userTweet.forEach(element => {
-            if (element.name == userName) {
-                userHtml += `
-                <div class="tweet">
-                <p class="user-name">${element.name}<p>
-                <p class="tweet-date">${new Date(element.createdOn).toLocaleTimeString()}</p>
-                <p class="tweet-text">${element.tweets}</p>
-                </div>
-                `
-            }
-        });
-        document.getElementById('text-area').innerHTML = userHtml;
+       
     }, (error) => {
         console.log(error.message);
     });
@@ -286,15 +273,16 @@ function getMyTweets() {
         let userTweet = response.data
         console.log(response.data)
         let userHtml = ""
-        let userName = document.getElementById('print-username').innerText      ;
+        let userName = document.getElementById('print-username').innerText;
         console.log(userName)
         userTweet.forEach(element => {
-            if (element.name === userName){
+            if (element.name === userName) {
                 userHtml += `
-                <div class="tweet">
-                <p class="user-name">${element.name}<p>
-                <p class="tweet-date">${new Date(element.createdOn).toLocaleTimeString()}</p>
-                <p class="tweet-text">${element.tweet}</p>
+                <div class="tweet" >
+                <img src="${element.profilePic}" alt="picture" style = " width : 50px ; height : 50px; background: rgb(129, 188, 96); ; border: 2px solid green; border-radius: 100%; ">
+                <p class="user-name" style="font-size:20px ; text-transform:upercase; font-style:italic ; font-face:sens-sarif ">${element.name}<p>
+                <p class="tweet-date" style=" text-align:right;">${new Date(element.createdOn).toLocaleTimeString()}</p>
+                <p class="tweet-text" >${element.tweet}</p>
                 </div>
                 `
             }
@@ -315,13 +303,14 @@ socket.on('NEW_POST', (newPost) => {
     console.log(newPost)
     let tweets = newPost;
     document.getElementById('text-area').innerHTML += `
-    <div class="tweet">
-    <p class="user-name">${newPost.name}<p>
-    <p class="tweet-date">${new Date(tweets.createdOn).toLocaleTimeString()}</p>
-    <p class="tweet-text">${tweets.tweet}</p>
+    <div class="tweet" style=" width:100% ; height:200px ">
+    <img src="${tweets.profilePic}" alt="picture" style = " width : 50px ; height : 50px; background: rgb(129, 188, 96); ; border: 2px solid green; border-radius: 100%; ">
+    <span class="user-name" style=" font-size:20px ; text-transform:uppercase; font-style:italic ; font-face:sens-sarif ">${tweets.name}<span>
+    <p class="tweet-date" style=" text-align:right;">${new Date(tweets.createdOn).toLocaleTimeString()}</p>
+    <p class="tweet-text" style="">${tweets.tweet}</p>
     </div>
     `
-    
+
 })
 
 
@@ -336,11 +325,11 @@ function upload() {
 
     let formData = new FormData();
 
-    formData.append("myFile", fileInput.files[0]); 
-    formData.append("email", sessionStorage.getItem('userEmail')); 
+    formData.append("myFile", fileInput.files[0]);
+    formData.append("email", sessionStorage.getItem('userEmail'));
     formData.append("myDetails",
         JSON.stringify({
-            "subject": "Science",  
+            "subject": "Science",
             "year": "2021"
         })
     );
@@ -348,7 +337,7 @@ function upload() {
     axios({
         method: 'post',
         url: url + "/upload",
-       
+
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' }
     })
@@ -356,13 +345,13 @@ function upload() {
             console.log(`upload Success` + res.data.picture);
             console.log(res.data.picture);
 
-   
+
         })
         .catch(err => {
             console.log(err);
         })
 
-    return false; 
+    return false;
 
 }
 
